@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 contract X1Coin is ERC20, Ownable, ReentrancyGuard {
-    uint256 public constant TOTAL_SUPPLY = 1_000_000_000 * 10**18;
+    uint256 public constant TOTAL_SUPPLY = 1_000_000_000 * 10 ** 18;
     uint256 public constant PUBLIC_SALE_AMOUNT = TOTAL_SUPPLY * 50 / 100;
     uint256 public constant TEAM_ADVISOR_AMOUNT = TOTAL_SUPPLY * 30 / 100;
     uint256 public constant COMMUNITY_AMOUNT = TOTAL_SUPPLY * 20 / 100;
@@ -14,7 +14,7 @@ contract X1Coin is ERC20, Ownable, ReentrancyGuard {
     bool public distributionComplete;
     bool public teamTokensReleased;
     uint256 public teamTokensUnlockTime;
-    
+
     address public teamWallet;
     address public communityWallet;
     address public publicSaleWallet;
@@ -22,11 +22,10 @@ contract X1Coin is ERC20, Ownable, ReentrancyGuard {
     event TokensDistributed(address indexed wallet, uint256 amount);
     event TeamTokensUnlocked();
 
-    constructor(
-        address _teamWallet,
-        address _communityWallet,
-        address _publicSaleWallet
-    ) ERC20("X1Coin", "X1C") Ownable(msg.sender) {
+    constructor(address _teamWallet, address _communityWallet, address _publicSaleWallet)
+        ERC20("X1Coin", "X1C")
+        Ownable(msg.sender)
+    {
         require(_teamWallet != address(0), "Invalid team wallet");
         require(_communityWallet != address(0), "Invalid community wallet");
         require(_publicSaleWallet != address(0), "Invalid public sale wallet");
@@ -40,7 +39,7 @@ contract X1Coin is ERC20, Ownable, ReentrancyGuard {
 
     function distributeTokens() external onlyOwner nonReentrant {
         require(!distributionComplete, "Distribution already completed");
-        
+
         _mint(publicSaleWallet, PUBLIC_SALE_AMOUNT);
         emit TokensDistributed(publicSaleWallet, PUBLIC_SALE_AMOUNT);
 
@@ -48,7 +47,7 @@ contract X1Coin is ERC20, Ownable, ReentrancyGuard {
         emit TokensDistributed(communityWallet, COMMUNITY_AMOUNT);
 
         _mint(address(this), TEAM_ADVISOR_AMOUNT);
-        
+
         distributionComplete = true;
     }
 
