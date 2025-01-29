@@ -10,6 +10,8 @@ The X1CoinStaking contract allows users to stake their X1Coin tokens, earn rewar
 ## Testing
 Run `forge test` to execute the tests
 
+![test](https://i.ibb.co/mCpX3cjG/Screenshot-from-2025-01-29-14-34-50.png)
+
 ## Contracts
 ### 1. **X1Coin (ERC-20 Token)**
 
