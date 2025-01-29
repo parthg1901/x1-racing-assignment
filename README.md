@@ -63,7 +63,20 @@ Run `forge test` to execute the tests
    ```
 2. Transfer staking reward tokens to the contract using `addRewardTokens(amount)`.
 
-Deployment Script - `script/X1Deploy.sol`
+### Deploy to a public network
+1. Setup your `.env` file:
+    Example
+    ```
+    PRIVATE_KEY=your_deployer_private_key
+    TEAM_WALLET=0x123
+    COMMUNITY_WALLET=0x123
+    PUBLIC_SALE_WALLET=0x123
+    ```
+2. Compile using `forge build`.
+
+3. Deploy the contracts:
+    `forge script script/X1Deploy.sol:X1Deploy --rpc-url <RPC_URL> --private-key <PRIVATE_KEY> --broadcast`
+
 
 ---
 
