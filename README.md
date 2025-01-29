@@ -1,66 +1,76 @@
-## Foundry
+# X1 Racing Internship Assignment
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+## Overview
+X1Coin is implemented as an ERC-20 token with a predefined total supply and a structured token distribution mechanism. It contains several types of distribution such as Team, Community and Publi
 
-Foundry consists of:
+The X1CoinStaking contract allows users to stake their X1Coin tokens, earn rewards based on an annual reward rate, and withdraw both their staked amount and accumulated rewards after the minimum staking period.
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+---
 
-## Documentation
+## Testing
+Run `forge test` to execute the tests
 
-https://book.getfoundry.sh/
+## Contracts
+### 1. **X1Coin (ERC-20 Token)**
 
-## Usage
+**Features:**
+- Total supply: **1,000,000,000 X1C** (1 billion tokens)
+- Token distribution:
+  - **50%** allocated for public sale
+  - **30%** reserved for team and advisors (locked for **180 days**)
+  - **20%** allocated for community incentives
+- Team tokens are locked and released after 180 days.
+- Implements **ReentrancyGuard** for security.
 
-### Build
+**Key Functions:**
+- `distributeTokens()` - Distributes tokens to public sale, community, and team allocation.
+- `releaseTeamTokens()` - Releases team tokens after the lock period.
+- `getTeamTokensUnlockTime()` - Returns remaining lock time for team tokens.
 
-```shell
-$ forge build
-```
+---
 
-### Test
+### 2. **X1CoinStaking (Staking Contract)**
 
-```shell
-$ forge test
-```
+**Features:**
+- Users can **stake X1C tokens** to earn rewards.
+- A **minimum staking period of 30 days** is required before unstaking.
+- **Annual reward rate of 10%**.
+- Rewards are calculated based on staking duration.
+- Implements **ReentrancyGuard** and **Pausable** security features.
 
-### Format
+**Key Functions:**
+- `stake(uint256 amount)` - Stakes X1C tokens.
+- `unstake()` - Unstakes tokens and claims rewards if the minimum period has passed.
+- `claimRewards()` - Claims accumulated staking rewards.
+- `getStakeInfo(address user)` - Returns staking details, including pending rewards.
+- `pause()` / `unpause()` - Admin functions to pause/unpause the contract.
 
-```shell
-$ forge fmt
-```
+---
 
-### Gas Snapshots
+## Deployment
 
-```shell
-$ forge snapshot
-```
+### **X1Coin Deployment**
+1. Deploy `X1Coin` contract with constructor arguments:
+   ```solidity
+   new X1Coin(teamWallet, communityWallet, publicSaleWallet);
+   ```
+2. Call `distributeTokens()` after deployment to allocate tokens.
 
-### Anvil
+### **X1CoinStaking Deployment**
+1. Deploy `X1CoinStaking` contract with X1Coin contract address:
+   ```solidity
+   new X1CoinStaking(address(X1Coin));
+   ```
+2. Transfer staking reward tokens to the contract using `addRewardTokens(amount)`.
 
-```shell
-$ anvil
-```
+Deployment Script - `script/X1Deploy.sol`
 
-### Deploy
+---
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
+## Security Considerations
+- Uses **ReentrancyGuard** to prevent reentrancy attacks.
+- Implements **Ownable** to restrict admin functions.
+- **Pausable contract** allows emergency stopping of staking operations.
+- Team tokens are **time-locked** for fair distribution.
 
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+---
