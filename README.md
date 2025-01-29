@@ -1,7 +1,7 @@
 # X1 Racing Internship Assignment
 
 ## Overview
-X1Coin is implemented as an ERC-20 token with a predefined total supply and a structured token distribution mechanism. It contains several types of distribution such as Team, Community and Publi
+X1Coin is implemented as an ERC-20 token with a predefined total supply and a structured token distribution mechanism. It contains several types of distribution such as Team, Community and Public.
 
 The X1CoinStaking contract allows users to stake their X1Coin tokens, earn rewards based on an annual reward rate, and withdraw both their staked amount and accumulated rewards after the minimum staking period.
 
